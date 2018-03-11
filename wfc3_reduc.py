@@ -17,7 +17,6 @@ from drizzlepac import astrodrizzle
 
 from embed_subs import embed_subs
 
-
 def wfc3_zeropoint_mags():
   mag_zeropoint = {  "F105W": 26.2687,
                      "F110W": 26.8223,
@@ -81,8 +80,8 @@ def embed_subarrays(datapath,fullframepath):
   files = glob.glob(os.path.join(inpath,'*q_flt.fits'))
   
   #Copy original _flt and _spt files to fullframe directory to avoid modification
-  #Thes files are needed for the embed_subs script
-  #(But only do this if the fullframe files don't already exist)
+  #These files are needed for the embed_subs script
+  # (But only do this if the fullframe files don't already exist)
   for file in files:
     fullframe_filename=file.replace("q_flt","f_flt")
     spt_file=file.replace("_flt","_spt")
@@ -224,7 +223,7 @@ def do_sextractor(filters,imdrizzlepath):
         os.system('sex -c default.sex -WEIGHT_IMAGE %s_drz_wht.fits -MAG_ZEROPOINT %f -CATALOG_NAME %s.cat %s_drz_sci.fits' % (filter,zp,filter,filter)) 
         os.chdir(working_dir)
 
-def identify_target(filter,imdrizzlepath,target_name=None):
+def identify_target(filter,imdrizzlepath):
   """
 
     Identify target amoung sources catalogued by Source Extractor.
@@ -242,9 +241,6 @@ def identify_target(filter,imdrizzlepath,target_name=None):
       the output catalog is saved using this name
       
   """
-  if target_name == None:
-    target_name='Target'   
-    
   #open the drizzled image file for given filter
   imfile = os.path.join(imdrizzlepath,filter+"_drz.fits")
   try:
@@ -323,7 +319,7 @@ def identify_target(filter,imdrizzlepath,target_name=None):
   cat.remove_rows(discard)
   ascii.write(cat, os.path.join(imdrizzlepath,filter+'_prep.cat'))
 
-def do_axe_prepare(filters,imdrizzlepath,target_name=None):
+def do_axe_prepare(filters,imdrizzlepath):
   working_dir = os.getcwd()
   if target_name == None:
     target_name = 'Target'
