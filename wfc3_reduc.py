@@ -1,7 +1,12 @@
+import datetime, glob, os, pyfits, shutil, sys, pdb
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 import pyraf
-import pdb
 from pyraf import iraf
 from iraf import stsdas, analysis, slitless, axe, images, imutil
+
 from stsci.tools import teal
 from astropy.io import fits
 from astropy.visualization import PercentileInterval
@@ -10,16 +15,8 @@ from astropy.io import ascii
 import drizzlepac
 from drizzlepac import astrodrizzle
 
-import cPickle, datetime, glob, os, pyfits, re, shutil, sys
-
-from argparse import ArgumentParser
-
-import numpy as np
-import matplotlib.pyplot as plt
-
 from embed_subs import embed_subs
-#We want data in datapath
-#We want configuration files in confpath
+
 
 def wfc3_zeropoint_mags():
   mag_zeropoint = {  "F105W": 26.2687,
