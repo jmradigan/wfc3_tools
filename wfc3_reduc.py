@@ -223,6 +223,18 @@ def do_sextractor(filters,imdrizzlepath):
         os.system('sex -c default.sex -WEIGHT_IMAGE %s_drz_wht.fits -MAG_ZEROPOINT %f -CATALOG_NAME %s.cat %s_drz_sci.fits' % (filter,zp,filter,filter)) 
         os.chdir(working_dir)
 
+        #Change the column heading MAG_AUTO to MAG<filter pivot wavlength> to prepare catalog for aXe
+        #This is instructed on pg 13 of the WFC3 IR grism handbook by J. Lee.
+        pw=wfc3_photplam()[filter]
+        cat = open('%s.cat'%(filter),'r')
+         out_cat = open('%s_prep.cat'%(filter),'w')
+           for line in f.readlines():
+             if 'MAG_AUTO' in line:
+               line = line.replace('MAG_AUTO','MAG_F%f'%(pw))
+             out_cat.write(line)
+          out_cat.close()
+          f.close()
+        
 def identify_target(filter,imdrizzlepath):
   """
 
@@ -269,7 +281,7 @@ def identify_target(filter,imdrizzlepath):
   scl_image = interval(image_data) 
   
   #open the catalog file
-  catfile=os.path.join(imdrizzlepath,filter+'.cat')
+  catfile=os.path.join(imdrizzlepath,filter+'_prep.cat')
   cat = ascii.read(os.path.join(imdrizzlepath,catfile))
 
   #get the source IDs, x-positions, and y-positions
@@ -317,7 +329,7 @@ def identify_target(filter,imdrizzlepath):
   discard = [i for i, junk in enumerate(src_id) if src_id[i] != target]
   pdb.set_trace()
   cat.remove_rows(discard)
-  ascii.write(cat, os.path.join(imdrizzlepath,filter+'_prep.cat'))
+  ascii.write(cat, os.path.join(imdrizzlepath,filter+'_prep_target.cat'))
 
 def do_axe_prepare(filters,imdrizzlepath):
   working_dir = os.getcwd()
@@ -330,7 +342,7 @@ def do_axe_prepare(filters,imdrizzlepath):
    
   for filter in filters:
     if filter[0].lower() == 'f': #this is an image, create the IOLs
-      catname = target+'_'+filter+'.cat'
+      catname = filter+'_prep.cat'
       iraf.unlearn('iolprep') #unlearn sets defaults
       iraf.iolprep(filter+'_drz.fits',catname,dimension_info='100,0,0,0',useMdriz='no')
     working_dir = os.path.join(prog_dir,os.environ["AXE_BASE_PATH"])
