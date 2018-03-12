@@ -91,8 +91,8 @@ def setup_environment(path):
   dirs['datapath'] = [os.path.join(path,"DATA"), "AXE_IMAGE_PATH"]
   dirs['fullframepath'] = [os.path.join(path,"FULLFRAME"), "AXE_FULLFRAME_PATH"]
   dirs['imdrizzlepath'] = [os.path.join(path,"IMDRIZZLE"), "AXE_IMDRIZZLE_PATH"]
-  dirs['drizzlepath'] = [os.path.join(path,"DRIZZLE"), "AXE_OUTPUT_PATH"]
-  dirs['outputpath'] = [os.path.join(path,"OUTPUT"), "AXE_DRIZZLE_PATH"]
+  dirs['drizzlepath'] = [os.path.join(path,"DRIZZLE"), "AXE_DRIZZLE_PATH"]
+  dirs['outputpath'] = [os.path.join(path,"OUTPUT"), "AXE_OUTPUT_PATH"]
   dirs['confpath'] = [os.path.join(path,"CONF"), "AXE_CONFIG_PATH"]
   
   for item in dirs:
