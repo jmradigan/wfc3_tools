@@ -1,18 +1,17 @@
-import datetime, glob, os, pyfits, shutil, sys, pdb
+import os
+import sys
+import glob
+import shutil
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-import pyraf
+import pyfits
 from pyraf import iraf
-from iraf import stsdas, analysis, slitless, axe, images, imutil
-
+from iraf import stsdas, analysis, slitless, axe
 from stsci.tools import teal
-from astropy.io import fits
+from astropy.io import fits, ascii
 from astropy.visualization import PercentileInterval
-from astropy.io import ascii
-
-import drizzlepac
 from drizzlepac import astrodrizzle
 
 from embed_subs import embed_subs
@@ -229,7 +228,7 @@ def do_astrodrizzle(filters,imdrizzlepath):
         os.chdir(old_dir)  #switch back to original working directory
 
 
-def do_sextractor(filters,imdrizzlepath):
+def do_sextractor(filters,imdrizzlepath,confpath):
   """
     Runs Source Extractor (SExtractor - can we all agree this is a bad name?)
     to identify target and reference stars
@@ -277,7 +276,7 @@ def do_sextractor(filters,imdrizzlepath):
         if len(missing_default_files) > 0:
           for df in missing_default_files:
             try:
-              shutil.copy(os.path.join(working_dir,df),os.path.join(imdrizzlepath,df))
+              shutil.copy(os.path.join(confpath,df),os.path.join(imdrizzlepath,df))
             except IOError, e:
               print "Unable to copy file. %s" % e
 

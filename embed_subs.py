@@ -20,7 +20,6 @@
 import pyfits
 import glob
 import numpy
-import pdb
 
 def embed_subs(flist):
     # Set some image dimension constants to be used later
