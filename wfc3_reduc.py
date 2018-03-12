@@ -418,7 +418,6 @@ def do_axeprep(filters,fullframepath,imdrizzlepath,basepath,datapath):
       f = open(listfile,'w')
       #get the MJD for each grism image
       grism_files = filters[filter]
-      #associated_image = []
       for file in grism_files:
         gpath, gfile = os.path.split(file)
         mjd = float(parse_fits_header(file,'EXPSTART'))
@@ -426,10 +425,10 @@ def do_axeprep(filters,fullframepath,imdrizzlepath,basepath,datapath):
         time_diff = mjd - mjd_array
         if True in (time_diff > 0):  #grism has image taken before it
           ind = np.where(time_diff[time_diff > 0].min() == time_diff)
-          associated_image = image_files[ind[0]] #.append(image_files[ind[0]])
+          associated_image = image_files[ind[0]] 
         else:
           ind = np.where(time_diff.max() == time_diff)
-          associated_image = image_files[ind[0]] #.append(image_files[ind[0]])
+          associated_image = image_files[ind[0]]
         ipath, ifile = os.path.split(associated_image) 
         f.write("%s %s %s\n" % (gfile,ifile.replace("_flt.fits","_flt_1.cat"),ifile))
       f.close()        
